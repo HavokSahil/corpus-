@@ -1,0 +1,5 @@
+target/
+corpus-data/
+errors.txt
+image_example.pdf
+*.pdf

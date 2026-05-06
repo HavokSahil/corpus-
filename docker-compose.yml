@@ -1,0 +1,29 @@
+services:
+  # ── Rust backend ──────────────────────────────────────────────
+  server:
+    build:
+      context: .
+      dockerfile: corpus-server/Dockerfile
+    container_name: corpus-server
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    volumes:
+      - corpus-data:/app/corpus-data
+    environment:
+      - RUST_LOG=info
+
+  # ── React frontend (nginx) ───────────────────────────────────
+  ui:
+    build:
+      context: corpus-ui
+      dockerfile: Dockerfile
+    container_name: corpus-ui
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+
+volumes:
+  corpus-data:

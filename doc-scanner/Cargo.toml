@@ -5,6 +5,14 @@ edition = "2021"
 description = "Modular document image processing pipeline — detect, warp, enhance, resize, encode"
 license = "MIT"
 
+[[bin]]
+name = "doc-scanner"
+path = "src/main.rs"
+
+[[bin]]
+name = "batch-scanner"
+path = "src/batch.rs"
+
 [dependencies]
 # Image I/O, pixel types, resizing
 image = "0.25"
@@ -24,3 +32,13 @@ thiserror = "2"
 # Structured logging
 log = "0.4"
 env_logger = "0.11"
+
+# Zip archive reading/writing
+zip = "2"
+
+# Recursive directory walking
+walkdir = "2"
+
+# Progress bar
+indicatif = "0.17"
+serde = { version = "1.0.228", features = ["derive"] }

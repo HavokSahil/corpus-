@@ -38,8 +38,26 @@ pub fn find_document(
     img: &DynamicImage,
     config: &PipelineConfig,
 ) -> Result<DocumentCorners> {
+    // Step 0: Downscale for faster detection (especially Gaussian blur).
+    let detect_width = 800.0;
+    let scale = if img.width() as f32 > detect_width {
+        detect_width / img.width() as f32
+    } else {
+        1.0
+    };
+
+    let small = if scale < 1.0 {
+        img.resize(
+            (img.width() as f32 * scale) as u32,
+            (img.height() as f32 * scale) as u32,
+            image::imageops::FilterType::Triangle,
+        )
+    } else {
+        img.clone()
+    };
+
     // Step 1: Grayscale
-    let gray = img.to_luma8();
+    let gray = small.to_luma8();
 
     // Step 2: Gaussian blur (σ = 2.0)
     let blurred = gaussian_blur_f32(&gray, 2.0);
@@ -54,8 +72,6 @@ pub fn find_document(
     )?;
 
     // Step 4: Dilate to close small gaps in edge contours.
-    // Using a 3×3 square kernel for a single pass.
-    // Dilate using L-infinity norm (square kernel), k=1 → 3×3 structuring element.
     let dilated = dilate(&edges, Norm::LInf, 1);
 
     config.save_debug_image(
@@ -76,11 +92,11 @@ pub fn find_document(
         imgproc::RETR_EXTERNAL,
         imgproc::CHAIN_APPROX_SIMPLE,
         Point::new(0, 0),
-    )?;
+    ).map_err(|e| PipelineError::OpenCvError(e.to_string()))?;
 
     log::info!("found {} contours", contours.len());
 
-    let total_area = img.width() as f64 * img.height() as f64;
+    let total_area = small.width() as f64 * small.height() as f64;
 
     // Step 6: Sort contours by area (descending)
     let mut contour_areas: Vec<(usize, f64)> = (0..contours.len())
@@ -100,11 +116,18 @@ pub fn find_document(
 
         let contour = contours.get(*idx)?;
         
-        // Extract the 4 extreme corners from this contour using sum/diff heuristic
-        let corners = get_extreme_corners(&contour);
+        // Extract the 4 extreme corners from this contour
+        let small_corners = get_extreme_corners(&contour);
         
         log::info!("document found: area={area:.0}");
-        return Ok(corners);
+        
+        // Scale corners back to original resolution
+        return Ok([
+            Point2f::new(small_corners[0].x / scale, small_corners[0].y / scale),
+            Point2f::new(small_corners[1].x / scale, small_corners[1].y / scale),
+            Point2f::new(small_corners[2].x / scale, small_corners[2].y / scale),
+            Point2f::new(small_corners[3].x / scale, small_corners[3].y / scale),
+        ]);
     }
 
     log::warn!("No clear document boundary found. Using entire image as fallback.");

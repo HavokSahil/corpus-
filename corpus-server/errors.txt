@@ -1,0 +1,876 @@
+    Checking corpus-server v0.1.0 (/home/sahil/Projects/corpus+/corpus-server)
+error[E0432]: unresolved import `image`
+ --> src/jobs.rs:9:5
+  |
+9 | use image::ImageEncoder;
+  |     ^^^^^ use of unresolved module or unlinked crate `image`
+  |
+  = help: if you wanted to use a crate named `image`, use `cargo add image` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `clap`
+  --> src/main.rs:20:5
+   |
+20 | use clap::Parser;
+   |     ^^^^ use of unresolved module or unlinked crate `clap`
+   |
+   = help: if you wanted to use a crate named `clap`, use `cargo add clap` to add it to your `Cargo.toml`
+
+error: cannot find attribute `command` in this scope
+  --> src/main.rs:27:3
+   |
+27 | #[command(name = "corpus-server", about = "Corpus+ document corpus management server")]
+   |   ^^^^^^^
+
+error: cannot find attribute `arg` in this scope
+  --> src/main.rs:30:7
+   |
+30 |     #[arg(long, default_value_t = 8080)]
+   |       ^^^
+
+error: cannot find attribute `arg` in this scope
+  --> src/main.rs:34:7
+   |
+34 |     #[arg(long, default_value = "./corpus-data")]
+   |       ^^^
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `image`
+  --> src/jobs.rs:98:27
+   |
+98 |             let encoder = image::codecs::png::PngEncoder::new(&mut buf);
+   |                           ^^^^^ use of unresolved module or unlinked crate `image`
+   |
+   = help: if you wanted to use a crate named `image`, use `cargo add image` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `image`
+  --> src/jobs.rs:71:25
+   |
+71 |         let img = match image::load_from_memory(&pending.data) {
+   |                         ^^^^^ use of unresolved module or unlinked crate `image`
+   |
+   = help: if you wanted to use a crate named `image`, use `cargo add image` to add it to your `Cargo.toml`
+
+error[E0277]: the trait bound `Uuid: serde::Serialize` is not satisfied
+    --> src/models.rs:11:24
+     |
+  11 | #[derive(Debug, Clone, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `Serialize` is not implemented for `Uuid`
+  12 | pub struct Corpus {
+  13 |     pub id: Uuid,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 142 others
+note: required by a bound in `models::_::_serde::ser::SerializeStruct::serialize_field`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:13:13
+     |
+  13 |     pub id: Uuid,
+     |             ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_element`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:13:13
+     |
+  13 |     pub id: Uuid,
+     |             ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_value`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+  --> src/models.rs:11:35
+   |
+11 | #[derive(Debug, Clone, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 166 others
+note: required by a bound in `models::_::_serde::__private228::de::missing_field`
+  --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `Uuid: serde::Serialize` is not satisfied
+    --> src/models.rs:34:24
+     |
+  34 | #[derive(Debug, Clone, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `Serialize` is not implemented for `Uuid`
+  35 | pub struct ImageMeta {
+  36 |     pub id: Uuid,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 142 others
+note: required by a bound in `models::_::_serde::ser::SerializeStruct::serialize_field`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:36:13
+     |
+  36 |     pub id: Uuid,
+     |             ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_element`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:36:13
+     |
+  36 |     pub id: Uuid,
+     |             ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_value`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+  --> src/models.rs:34:35
+   |
+34 | #[derive(Debug, Clone, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 166 others
+note: required by a bound in `models::_::_serde::__private228::de::missing_field`
+  --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `Uuid: serde::Serialize` is not satisfied
+    --> src/models.rs:69:24
+     |
+  69 | #[derive(Debug, Clone, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `Serialize` is not implemented for `Uuid`
+  70 | pub struct JobState {
+  71 |     pub id: Uuid,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 142 others
+note: required by a bound in `models::_::_serde::ser::SerializeStruct::serialize_field`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:71:13
+     |
+  71 |     pub id: Uuid,
+     |             ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_element`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:72:20
+     |
+  72 |     pub corpus_id: Uuid,
+     |                    ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_element`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:71:13
+     |
+  71 |     pub id: Uuid,
+     |             ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_value`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+    --> src/models.rs:72:20
+     |
+  72 |     pub corpus_id: Uuid,
+     |                    ^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 166 others
+note: required by a bound in `next_value`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `Uuid: serde::Deserialize<'de>` is not satisfied
+  --> src/models.rs:69:35
+   |
+69 | #[derive(Debug, Clone, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `Deserialize<'_>` is not implemented for `Uuid`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `Uuid` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 166 others
+note: required by a bound in `models::_::_serde::__private228::de::missing_field`
+  --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `Uuid: serde::Serialize` is not satisfied
+    --> src/models.rs:111:17
+     |
+ 111 | #[derive(Debug, Serialize)]
+     |                 ^^^^^^^^^ the trait `Serialize` is not implemented for `Uuid`
+ 112 | pub struct UploadResponse {
+ 113 |     pub job_id: Uuid,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `Uuid` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 142 others
+note: required by a bound in `models::_::_serde::ser::SerializeStruct::serialize_field`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `parse` found for struct `Cli` in the current scope
+  --> src/main.rs:46:20
+   |
+28 | struct Cli {
+   | ---------- function or associated item `parse` not found for this struct
+...
+46 |     let cli = Cli::parse();
+   |                    ^^^^^ function or associated item not found in `Cli`
+   |
+   = help: items from traits can only be used if the trait is implemented and in scope
+   = note: the following traits define an item `parse`, perhaps you need to implement one of them:
+           candidate #1: `bitstream_io::read::BitRead`
+           candidate #2: `bitstream_io::read::BitRead2`
+           candidate #3: `bitstream_io::read::ByteRead`
+           candidate #4: `nom::internal::Parser`
+           candidate #5: `ttf_parser::ggg::layout_table::RecordListItem`
+           candidate #6: `ttf_parser::ggg::lookup::LookupSubtable`
+           candidate #7: `ttf_parser::parser::FromData`
+           candidate #8: `ttf_parser::parser::FromSlice`
+
+error[E0277]: the trait bound `fn(State<AppState>, Path<Uuid>) -> ... {get_corpus}: Handler<_, _>` is not satisfied
+    --> src/main.rs:61:40
+     |
+  61 |         .route("/api/corpora/:id", get(corpus_routes::get_corpus))
+     |                                    --- ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<Uuid>) -> ... {get_corpus}`
+     |                                    |
+     |                                    required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `axum::routing::get`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `get`
+...
+ 439 | top_level_handler_fn!(get, GET);
+     | -------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-12654186365870419545.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, ..., ...) -> ... {rename_corpus}: Handler<_, _>` is not satisfied
+    --> src/main.rs:62:42
+     |
+  62 |         .route("/api/corpora/:id", patch(corpus_routes::rename_corpus))
+     |                                    ----- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<Uuid>, Json<...>) -> ... {rename_corpus}`
+     |                                    |
+     |                                    required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `patch`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `patch`
+...
+ 442 | top_level_handler_fn!(patch, PATCH);
+     | -----------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-18144160776503165706.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, Path<Uuid>) -> ... {delete_corpus}: Handler<_, _>` is not satisfied
+    --> src/main.rs:63:43
+     |
+  63 |         .route("/api/corpora/:id", delete(corpus_routes::delete_corpus))
+     |                                    ------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<Uuid>) -> ... {delete_corpus}`
+     |                                    |
+     |                                    required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `delete`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `delete`
+...
+ 438 | top_level_handler_fn!(delete, DELETE);
+     | -------------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-8448408857702614058.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, ..., ...) -> ... {upload_images}: Handler<_, _>` is not satisfied
+    --> src/main.rs:65:48
+     |
+  65 |         .route("/api/corpora/:id/images", post(image_routes::upload_images))
+     |                                           ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<Uuid>, Multipart) -> ... {upload_images}`
+     |                                           |
+     |                                           required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `post`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `post`
+...
+ 443 | top_level_handler_fn!(post, POST);
+     | ---------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-14921379142217171523.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, Path<...>) -> ... {serve_image}: Handler<_, _>` is not satisfied
+    --> src/main.rs:66:55
+     |
+  66 |         .route("/api/corpora/:id/images/:img_id", get(image_routes::serve_image))
+     |                                                   --- ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<(Uuid, Uuid)>) -> ... {serve_image}`
+     |                                                   |
+     |                                                   required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `axum::routing::get`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `get`
+...
+ 439 | top_level_handler_fn!(get, GET);
+     | -------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-6733076535352975322.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, ..., ...) -> ... {reorder_image}: Handler<_, _>` is not satisfied
+    --> src/main.rs:67:57
+     |
+  67 |         .route("/api/corpora/:id/images/:img_id", patch(image_routes::reorder_image))
+     |                                                   ----- ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<(Uuid, Uuid)>, ...) -> ... {reorder_image}`
+     |                                                   |
+     |                                                   required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `patch`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `patch`
+...
+ 442 | top_level_handler_fn!(patch, PATCH);
+     | -----------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-3110691072398973622.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, Path<...>) -> ... {delete_image}: Handler<_, _>` is not satisfied
+    --> src/main.rs:68:58
+     |
+  68 |         .route("/api/corpora/:id/images/:img_id", delete(image_routes::delete_image))
+     |                                                   ------ ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<(Uuid, Uuid)>) -> ... {delete_image}`
+     |                                                   |
+     |                                                   required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `delete`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `delete`
+...
+ 438 | top_level_handler_fn!(delete, DELETE);
+     | -------------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-5984462192154799885.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, Path<Uuid>) -> ... {export_corpus}: Handler<_, _>` is not satisfied
+    --> src/main.rs:70:47
+     |
+  70 |         .route("/api/corpora/:id/export", get(image_routes::export_corpus))
+     |                                           --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<Uuid>) -> ... {export_corpus}`
+     |                                           |
+     |                                           required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `axum::routing::get`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `get`
+...
+ 439 | top_level_handler_fn!(get, GET);
+     | -------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-7110104389710900620.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `fn(State<AppState>, Path<Uuid>) -> ... {get_job}: Handler<_, _>` is not satisfied
+    --> src/main.rs:72:41
+     |
+  72 |         .route("/api/jobs/:job_id", get(image_routes::get_job))
+     |                                     --- ^^^^^^^^^^^^^^^^^^^^^ the trait `Handler<_, _>` is not implemented for fn item `fn(State<AppState>, Path<Uuid>) -> impl Future<Output = ...> {get_job}`
+     |                                     |
+     |                                     required by a bound introduced by this call
+     |
+     = note: Consider using `#[axum::debug_handler]` to improve the error message
+help: the following other types implement trait `Handler<T, S>`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:1309:1
+     |
+1309 | / impl<S> Handler<(), S> for MethodRouter<S>
+1310 | | where
+1311 | |     S: Clone + 'static,
+     | |_______________________^ `MethodRouter<S>` implements `Handler<(), S>`
+     |
+    ::: /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/handler/mod.rs:303:1
+     |
+ 303 | / impl<H, S, T, L> Handler<T, S> for Layered<L, H, T, S>
+ 304 | | where
+ 305 | |     L: Layer<HandlerService<H, T, S>> + Clone + Send + 'static,
+ 306 | |     H: Handler<T, S>,
+...    |
+ 310 | |     T: 'static,
+ 311 | |     S: 'static,
+     | |_______________^ `Layered<L, H, T, S>` implements `Handler<T, S>`
+note: required by a bound in `axum::routing::get`
+    --> /home/sahil/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/axum-0.7.9/src/routing/method_routing.rs:166:16
+     |
+ 166 |             H: Handler<T, S>,
+     |                ^^^^^^^^^^^^^ required by this bound in `get`
+...
+ 439 | top_level_handler_fn!(get, GET);
+     | -------------------------------
+     | |                     |
+     | |                     required by a bound in this function
+     | in this macro invocation
+     = note: the full name for the type has been written to '/home/sahil/Projects/corpus+/corpus-server/target/debug/deps/corpus_server-86ca24b7f02f4e66.long-type-10799974479523167838.txt'
+     = note: consider using `--verbose` to print the full type name to the console
+     = note: this error originates in the macro `top_level_handler_fn` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Some errors have detailed explanations: E0277, E0432, E0433, E0599.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `corpus-server` (bin "corpus-server") due to 32 previous errors

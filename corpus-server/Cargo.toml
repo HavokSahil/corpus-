@@ -1,0 +1,52 @@
+[package]
+name = "corpus-server"
+version = "0.1.0"
+edition = "2021"
+description = "Corpus+ — document corpus management server"
+license = "MIT"
+
+[[bin]]
+name = "corpus-server"
+path = "src/main.rs"
+
+[dependencies]
+# Web framework
+axum = { version = "0.7", features = ["multipart"] }
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors", "fs", "trace"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# IDs and time
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Concurrent state
+dashmap = "6"
+
+# Zip for export and upload reading
+zip = "2"
+
+# Recursive directory walking
+walkdir = "2"
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Error handling
+thiserror = "2"
+anyhow = "1"
+
+# CLI args
+clap = { version = "4.5", features = ["derive"] }
+
+# Image processing (needed for encoding/decoding in jobs.rs)
+image = "0.25"
+
+# The doc-scanner pipeline
+doc-scanner = { path = "../doc-scanner" }
+# PDF export
+printpdf = { version = "0.9.1", features = ["images", "png", "jpeg", "bmp", "webp"] }

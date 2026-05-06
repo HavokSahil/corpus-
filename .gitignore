@@ -1,1 +1,23 @@
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+npm-debug.log*
+
+# Docker & OS
+.DS_Store
+.dockerignore
+!corpus-server/.dockerignore
+!corpus-ui/.dockerignore
+
+# App Data
+corpus-data/
 test_results/*
+debug_output*.png
+batch_results/
+debug_test_run*/

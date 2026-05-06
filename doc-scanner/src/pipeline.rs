@@ -53,9 +53,13 @@ pub fn run(input: &Path, output: &Path, config: &PipelineConfig) -> Result<()> {
     let warped = transform::warp_perspective(&img, &corners, config)?;
     log::info!("warped to {}×{}", warped.width(), warped.height());
 
-    // Stage 3: Enhance
+    // Stage 3: Resize (Move before Enhance to prevent overflow in large images)
+    log::info!("normalizing resolution...");
+    let resized = resize::normalize(&warped, config)?;
+
+    // Stage 4: Enhance
     log::info!("enhancing document...");
-    let enhanced = enhance::enhance_document(&warped, config)?;
+    let enhanced = enhance::enhance_document(&resized, config)?;
     log::info!(
         "enhanced: {}×{}, binary={}",
         enhanced.image.width(),
@@ -63,19 +67,9 @@ pub fn run(input: &Path, output: &Path, config: &PipelineConfig) -> Result<()> {
         enhanced.is_binary
     );
 
-    // Stage 4: Resize
-    log::info!("normalizing resolution...");
-    let resized = resize::normalize(&enhanced.image, config)?;
-
-    // Wrap in EnhancedImage to preserve the is_binary flag for encoding
-    let final_image = enhance::EnhancedImage {
-        image: resized,
-        is_binary: enhanced.is_binary,
-    };
-
     // Stage 5: Encode
     log::info!("encoding output...");
-    encode::save(&final_image, output, config)?;
+    encode::save(&enhanced, output, config)?;
 
     log::info!("pipeline complete: {}", output.display());
     Ok(())
@@ -89,11 +83,10 @@ pub fn run_in_memory(
 ) -> Result<enhance::EnhancedImage> {
     let corners = detect::find_document(img, config)?;
     let warped = transform::warp_perspective(img, &corners, config)?;
-    let enhanced = enhance::enhance_document(&warped, config)?;
-    let resized = resize::normalize(&enhanced.image, config)?;
+    
+    // Resize before enhance
+    let resized = resize::normalize(&warped, config)?;
+    let enhanced = enhance::enhance_document(&resized, config)?;
 
-    Ok(enhance::EnhancedImage {
-        image: resized,
-        is_binary: enhanced.is_binary,
-    })
+    Ok(enhanced)
 }

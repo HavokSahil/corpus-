@@ -5,8 +5,11 @@
 
 use std::path::PathBuf;
 
+use serde::{Deserialize, Serialize};
+
 /// Supported output formats.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum OutputFormat {
     /// Automatically choose based on image content:
     /// binary/thresholded → PNG, grayscale/photo → JPEG.
@@ -28,9 +31,25 @@ impl std::str::FromStr for OutputFormat {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum EnhanceMode {
+    /// High-contrast black and white (default).
+    Binary,
+    /// Keep grayscale but normalize contrast.
+    Grayscale,
+    /// Keep original colors.
+    Color,
+}
+
 /// Complete set of tuneable parameters for the pipeline.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PipelineConfig {
+    // -- Enhance --
+    /// Enhancement mode.
+    pub enhance_mode: EnhanceMode,
+    /// Whether to use morphological operations (open/close) during enhancement.
+    pub use_morphology: bool,
     // -- Resize --
     /// Maximum output width in pixels. Images narrower than this are untouched.
     pub max_width: u32,
@@ -57,19 +76,22 @@ pub struct PipelineConfig {
     /// When true, intermediate images are written to `debug_dir`.
     pub debug: bool,
     /// Directory for debug output images.
+    #[serde(skip)]
     pub debug_dir: PathBuf,
 }
 
 impl Default for PipelineConfig {
     fn default() -> Self {
         Self {
+            enhance_mode: EnhanceMode::Binary,
+            use_morphology: false,
             max_width: 1200,
             jpeg_quality: 80,
             output_format: OutputFormat::Auto,
-            canny_low: 50.0,
-            canny_high: 150.0,
-            adaptive_block_radius: 15,
-            adaptive_c: 15,
+            canny_low: 40.0,
+            canny_high: 120.0,
+            adaptive_block_radius: 20,
+            adaptive_c: 8,
             debug: false,
             debug_dir: PathBuf::from("debug"),
         }

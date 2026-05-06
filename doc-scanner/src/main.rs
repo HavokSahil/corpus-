@@ -53,20 +53,28 @@ struct Cli {
     debug_dir: PathBuf,
 
     /// Canny edge detector low threshold
-    #[arg(long, default_value_t = 50.0)]
+    #[arg(long, default_value_t = 40.0)]
     canny_low: f32,
 
     /// Canny edge detector high threshold
-    #[arg(long, default_value_t = 150.0)]
+    #[arg(long, default_value_t = 120.0)]
     canny_high: f32,
 
     /// Block radius for adaptive thresholding (window = 2×radius + 1)
-    #[arg(long, default_value_t = 15)]
+    #[arg(long, default_value_t = 20)]
     adaptive_block_radius: u32,
 
     /// Noise reduction constant for adaptive thresholding (higher = less noise)
-    #[arg(long, default_value_t = 15)]
+    #[arg(long, default_value_t = 8)]
     adaptive_c: i32,
+
+    /// Enhancement mode: binary, grayscale, or color
+    #[arg(long, default_value = "binary")]
+    enhance_mode: String,
+
+    /// Disable morphological operations (open/close) during enhancement
+    #[arg(long, default_value_t = false)]
+    no_morphology: bool,
 }
 
 fn main() {
@@ -88,8 +96,18 @@ fn main() {
             std::process::exit(1);
         });
 
+    // Parse enhance mode
+    let enhance_mode = match cli.enhance_mode.to_lowercase().as_str() {
+        "binary" => doc_scanner::config::EnhanceMode::Binary,
+        "grayscale" => doc_scanner::config::EnhanceMode::Grayscale,
+        "color" => doc_scanner::config::EnhanceMode::Color,
+        _ => doc_scanner::config::EnhanceMode::Binary,
+    };
+
     // Build pipeline configuration from CLI arguments.
     let config = PipelineConfig {
+        enhance_mode,
+        use_morphology: !cli.no_morphology,
         max_width: cli.max_width,
         jpeg_quality: cli.quality,
         output_format,
