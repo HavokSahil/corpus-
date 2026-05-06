@@ -1,0 +1,26 @@
+[package]
+name = "doc-scanner"
+version = "0.1.0"
+edition = "2021"
+description = "Modular document image processing pipeline — detect, warp, enhance, resize, encode"
+license = "MIT"
+
+[dependencies]
+# Image I/O, pixel types, resizing
+image = "0.25"
+
+# Edge detection, adaptive threshold, morphology, gaussian blur
+imageproc = "0.26"
+
+# Contour detection + perspective transform (the only two OpenCV operations)
+opencv = { version = "0.98", features = ["imgproc", "imgcodecs"] }
+
+# CLI argument parsing
+clap = { version = "4", features = ["derive"] }
+
+# Ergonomic custom error types
+thiserror = "2"
+
+# Structured logging
+log = "0.4"
+env_logger = "0.11"
