@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # ── Rust Backend ───────────────────────────────────────────────
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libopencv-dev clang libclang-dev
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+      - name: Check & Test
+        run: |
+          cargo check --manifest-path corpus-server/Cargo.toml
+          cargo check --manifest-path doc-scanner/Cargo.toml
+          # cargo test --manifest-path corpus-server/Cargo.toml # Uncomment if you have tests
+
+  # ── React Frontend ──────────────────────────────────────────────
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: corpus-ui/package-lock.json
+      - name: Install & Build
+        run: |
+          cd corpus-ui
+          npm ci
+          npm run build
+
+  # ── Docker Build Verification ──────────────────────────────────
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Server Image
+        run: docker build -t corpus-server -f corpus-server/Dockerfile .
+      - name: Build UI Image
+        run: docker build -t corpus-ui -f corpus-ui/Dockerfile corpus-ui
