@@ -83,6 +83,10 @@ struct Cli {
     /// Show a visual progress bar instead of per-image logs
     #[arg(long, default_value_t = false)]
     progress: bool,
+
+    /// Disable morphological operations (open/close) during enhancement
+    #[arg(long, default_value_t = false)]
+    no_morphology: bool,
 }
 
 // ---------------------------------------------------------------------------
@@ -326,6 +330,7 @@ fn main() {
 
         let config = PipelineConfig {
             enhance_mode,
+            use_morphology: !cli.no_morphology,
             max_width: cli.max_width,
             jpeg_quality: cli.quality,
             output_format,

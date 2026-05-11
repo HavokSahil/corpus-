@@ -1,4 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
+import Fuse from 'fuse.js';
+import { useState, useMemo } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import {
   DndContext,
@@ -83,6 +85,7 @@ function SortableItem({
 }
 
 export function ImageGrid({ corpus, onCorpusUpdate, onImageClick }: Props) {
+  const [search, setSearch] = useState('');
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -97,6 +100,18 @@ export function ImageGrid({ corpus, onCorpusUpdate, onImageClick }: Props) {
       alert('Delete failed');
     }
   };
+
+  const fuse = useMemo(() => new Fuse(corpus.images, {
+    keys: ['original_name'],
+    threshold: 0.4,
+  }), [corpus.images]);
+
+  const filteredImages = useMemo(() => {
+    if (!search.trim()) {
+      return [...corpus.images].sort((a, b) => a.index - b.index);
+    }
+    return fuse.search(search).map(r => r.item);
+  }, [fuse, search, corpus.images]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -135,8 +150,6 @@ export function ImageGrid({ corpus, onCorpusUpdate, onImageClick }: Props) {
     );
   }
 
-  // Sort images by index for consistent display and reading
-  const sortedImages = [...corpus.images].sort((a, b) => a.index - b.index);
 
   return (
     <>
@@ -145,17 +158,40 @@ export function ImageGrid({ corpus, onCorpusUpdate, onImageClick }: Props) {
           Scanned Pages
           <span className="count-badge">{corpus.images.length}</span>
         </div>
+
+        <div className="search-container image-grid-search">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search images by name…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
       </div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={sortedImages.map(i => i.id)} strategy={rectSortingStrategy}>
+        <SortableContext 
+          items={filteredImages.map(i => i.id)} 
+          strategy={rectSortingStrategy}
+          disabled={!!search.trim()}
+        >
           <div className="image-grid">
-            {sortedImages.map((img, idx) => (
+            {filteredImages.length === 0 && (
+              <div className="empty-state" style={{ gridColumn: '1 / -1', marginTop: 20 }}>
+                <p>No images match your search.</p>
+              </div>
+            )}
+            {filteredImages.map((img) => (
               <SortableItem 
                 key={img.id} 
                 img={img} 
                 corpusId={corpus.id} 
                 onDelete={handleDelete}
-                onClick={() => onImageClick(idx)}
+                onClick={() => {
+                  const idx = corpus.images.findIndex(i => i.id === img.id);
+                  onImageClick(idx);
+                }}
               />
             ))}
           </div>

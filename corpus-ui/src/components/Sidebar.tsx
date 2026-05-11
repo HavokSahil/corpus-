@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import Fuse from 'fuse.js';
 import { api } from '../api';
 import type { Corpus } from '../api';
 
@@ -13,6 +14,7 @@ export function Sidebar({ onSelect, selected, refresh }: Props) {
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -22,6 +24,16 @@ export function Sidebar({ onSelect, selected, refresh }: Props) {
   useEffect(() => {
     if (showModal) setTimeout(() => inputRef.current?.focus(), 50);
   }, [showModal]);
+
+  const fuse = useMemo(() => new Fuse(corpora, {
+    keys: ['name'],
+    threshold: 0.4,
+  }), [corpora]);
+
+  const filteredCorpora = useMemo(() => {
+    if (!search.trim()) return corpora;
+    return fuse.search(search).map(r => r.item);
+  }, [fuse, search, corpora]);
 
   const handleCreate = async () => {
     if (!newName.trim()) return;
@@ -51,13 +63,27 @@ export function Sidebar({ onSelect, selected, refresh }: Props) {
             <span>＋</span> New Corpus
           </button>
         </div>
+
+        <div className="sidebar-search">
+          <div className="search-container">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search corpora…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="sidebar-list">
-          {corpora.length === 0 && (
+          {filteredCorpora.length === 0 && (
             <div style={{ padding: '16px', color: 'var(--text-3)', fontSize: 12, textAlign: 'center' }}>
-              No corpora yet
+              {search ? 'No matches found' : 'No corpora yet'}
             </div>
           )}
-          {corpora.map(c => (
+          {filteredCorpora.map(c => (
             <div
               key={c.id}
               className={`corpus-item ${selected === c.id ? 'active' : ''}`}

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+PROJECT_DIR="/home/sahil/Projects/corpus+"
+SCRIPTS_DIR="$PROJECT_DIR/scripts"
+
+case "$1" in
+    run)
+        echo "Starting Corpus+..."
+        cd "$PROJECT_DIR" && docker-compose up -d
+        ;;
+    stop)
+        echo "Stopping Corpus+..."
+        cd "$PROJECT_DIR" && docker-compose down
+        ;;
+    restart)
+        echo "Restarting Corpus+..."
+        cd "$PROJECT_DIR" && docker-compose restart
+        ;;
+    status)
+        cd "$PROJECT_DIR" && docker-compose ps
+        ;;
+    logs)
+        cd "$PROJECT_DIR" && docker-compose logs -f
+        ;;
+    backup)
+        "$SCRIPTS_DIR/backup-corpus.sh"
+        ;;
+    restore)
+        "$SCRIPTS_DIR/restore-corpus.sh"
+        ;;
+    *)
+        echo "Usage: corpus {run|stop|restart|status|logs|backup|restore}"
+        exit 1
+        ;;
+esac
