@@ -7,9 +7,10 @@ interface Props {
   onSelect: (corpus: Corpus | null) => void;
   selected: string | null;
   refresh: number;
+  onLogout?: () => void;
 }
 
-export function Sidebar({ onSelect, selected, refresh }: Props) {
+export function Sidebar({ onSelect, selected, refresh, onLogout }: Props) {
   const [corpora, setCorpora] = useState<Corpus[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState('');
@@ -97,6 +98,15 @@ export function Sidebar({ onSelect, selected, refresh }: Props) {
             </div>
           ))}
         </div>
+
+        {onLogout && (
+          <div className="sidebar-footer">
+            <button className="btn-logout" onClick={onLogout} title="Sign out">
+              <span className="logout-icon">⏻</span>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        )}
       </aside>
 
       {showModal && (

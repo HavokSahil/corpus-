@@ -6,6 +6,7 @@ use std::sync::Arc;
 use dashmap::DashMap;
 use uuid::Uuid;
 
+use crate::auth::{AuthConfig, SessionStore};
 use crate::models::JobState;
 
 #[derive(Clone)]
@@ -14,6 +15,10 @@ pub struct AppState {
     pub data_dir: PathBuf,
     /// In-memory job registry.
     pub jobs: Arc<DashMap<Uuid, JobState>>,
+    /// Authentication configuration (password hash, TTL).
+    pub auth_config: AuthConfig,
+    /// Active session tokens.
+    pub sessions: SessionStore,
 }
 
 impl AppState {
@@ -22,6 +27,8 @@ impl AppState {
         Self {
             data_dir,
             jobs: Arc::new(DashMap::new()),
+            auth_config: AuthConfig::from_env(),
+            sessions: Arc::new(DashMap::new()),
         }
     }
 
@@ -40,3 +47,4 @@ impl AppState {
         self.corpus_dir(corpus_id).join("meta.json")
     }
 }
+

@@ -50,3 +50,8 @@ image = "0.25"
 doc-scanner = { path = "../doc-scanner" }
 # PDF export
 printpdf = { version = "0.9.1", features = ["images", "png", "jpeg", "bmp", "webp"] }
+
+# Authentication
+argon2 = "0.5"
+rand = "0.8"
+hex = "0.4"

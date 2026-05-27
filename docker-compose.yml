@@ -6,12 +6,13 @@ services:
       dockerfile: corpus-server/Dockerfile
     container_name: corpus-server
     restart: unless-stopped
-    ports:
-      - "8081:8081"
+    # Port NOT published — backend only reachable via Docker internal network
     volumes:
       - corpus-data:/app/corpus-data
     environment:
       - RUST_LOG=info
+      - CORPUS_PASSWORD=${CORPUS_PASSWORD:-natalieportman}
+      - CORPUS_SESSION_TTL=${CORPUS_SESSION_TTL:-86400}
 
   # ── React frontend (nginx) ───────────────────────────────────
   ui:

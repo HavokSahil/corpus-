@@ -5,6 +5,7 @@
 //! corpus-server --port 8080 --data-dir ./corpus-data
 //! ```
 
+mod auth;
 mod jobs;
 mod models;
 mod routes;
@@ -15,6 +16,7 @@ use std::path::PathBuf;
 
 use axum::{
     extract::DefaultBodyLimit,
+    middleware,
     routing::{delete, get, patch, post},
     Router,
 };
@@ -56,6 +58,10 @@ async fn main() {
         .allow_headers(Any);
 
     let app = Router::new()
+        // ── Auth routes (login is unprotected, others go through middleware) ──
+        .route("/api/auth/login", post(auth::login))
+        .route("/api/auth/logout", post(auth::logout))
+        .route("/api/auth/check", get(auth::check))
         // Corpus CRUD
         .route("/api/corpora", get(corpus_routes::list_corpora))
         .route("/api/corpora", post(corpus_routes::create_corpus))
@@ -72,6 +78,11 @@ async fn main() {
         .route("/api/corpora/:id/export/pdf", get(image_routes::export_corpus_pdf))
         // Job polling
         .route("/api/jobs/:job_id", get(image_routes::get_job))
+        // ── Auth middleware protects all routes above ──
+        .layer(middleware::from_fn_with_state(
+            state.clone(),
+            auth::auth_middleware,
+        ))
         .layer(DefaultBodyLimit::disable())
         .layer(cors)
         .with_state(state);
@@ -81,3 +92,4 @@ async fn main() {
     log::info!("listening on http://{addr}");
     axum::serve(listener, app).await.unwrap();
 }
+
