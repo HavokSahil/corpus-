@@ -2,7 +2,7 @@
 
 All notable changes to Corpus+ will be documented in this file.
 
-## [Unreleased]
+## [0.2.0] — 2026-05-27
 
 ### Added
 
